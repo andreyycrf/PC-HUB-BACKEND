@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Peça - PC-HUB</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        form { max-width: 600px; margin-top: 20px; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+        .btn-back { background-color: #6c757d; margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Cadastro de Nova Peça</h1>
+    
+    <form th:action="@{/pecas}" th:object="${peca}" method="post">
+        
+        <label for="tipo">Tipo:</label>
+        <input type="text" id="tipo" th:field="*{tipo}" required>
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" required>
+
+        <label for="socket">Socket:</label>
+        <input type="text" id="socket" th:field="*{socket}">
+
+        <label for="frequencia">Frequência:</label>
+        <input type="text" id="frequencia" th:field="*{frequencia}">
+
+        <label for="memoria">Memória:</label>
+        <input type="text" id="memoria" th:field="*{memoria}">
+
+        <label for="idp">IDP:</label>
+        <input type="text" id="idp" th:field="*{idp}">
+
+        <label for="leitura">Leitura:</label>
+        <input type="text" id="leitura" th:field="*{leitura}">
+
+        <label for="gravacao">Gravação:</label>
+        <input type="text" id="gravacao" th:field="*{gravacao}">
+
+        <button type="submit">Salvar Peça</button>
+        <a th:href="@{/pecas}" class="btn-back button">Voltar para a Lista</a>
+    </form>
+</body>
+</html>

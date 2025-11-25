@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Hub - Cadastro de Usuário</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Reutilizando o estilo do login para o cadastro -->
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--background);
+        }
+        .auth-box {
+            background-color: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .auth-box h2 {
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            font-weight: var(--font-weight-semibold);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: var(--font-weight-medium);
+            color: var(--text-medium);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        .btn-login {
+            width: 100%;
+            margin-top: 1rem;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-login:hover {
+            background-color: var(--primary-hover);
+        }
+        .link-cadastro {
+            display: block;
+            margin-top: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+        }
+        .link-cadastro:hover {
+            text-decoration: underline;
+        }
+        .alert {
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius-md);
+            text-align: left;
+            font-weight: var(--font-weight-medium);
+        }
+        .alert-error {
+            background-color: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>Cadastro de Usuário</h2>
+
+            <div th:if="${error}" class="alert alert-error">
+                <p th:text="${error}"></p>
+            </div>
+
+            <form th:action="@{/usuario/cadastro}" th:object="${usuario}" method="post">
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" th:field="*{nome}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" th:field="*{senha}" required>
+                </div>
+                <button type="submit" class="btn-login">Cadastrar</button>
+            </form>
+
+            <a th:href="@{/login}" class="link-cadastro">Já tem conta? Faça Login</a>
+        </div>
+    </div>
+</body>
+</html>

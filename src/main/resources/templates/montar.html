@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montar PC - PC Hub</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/jogos.png}">
+    <link rel="stylesheet" th:href="@{/css/montar.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header role="banner">
+        <nav class="navbar" aria-label="Navegação principal">
+            <div class="container nav-container">
+                <a th:href="@{/}" class="nav-logo" aria-label="PC Hub - Página inicial">
+                    <span class="logo-icon" aria-hidden="true">⚙️</span>
+                    PC Hub
+                </a>
+                <div class="nav-links">
+                    <a th:href="@{/}" class="nav-link">Início</a>
+                    <a th:href="@{/avaliar}" class="nav-link">Avaliar Setup</a>
+                    <a th:href="@{/montar}" class="nav-link active" aria-current="page">Montar PC</a>
+                    <a th:href="@{/pc/cadastro}" class="nav-link">Cadastrar</a>
+                    <a th:href="@{/login}" class="nav-link" sec:authorize="!isAuthenticated()">Login</a>
+                    <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                        <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer;">Sair</button>
+                    </form>
+                </div>
+                <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu principal">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="montar-pc">
+            <h1>Monte seu PC dos Sonhos</h1>
+            <p>Escolha os componentes ideais para o seu novo computador!</p>
+        </section>
+        <section class="componentes">
+            <form th:action="@{/montar}" th:object="${pcMontado}" method="post">
+                <div class="componente">
+                    <h2>Processador (CPU)</h2>
+                    <select th:field="*{processador}" id="processador-select">
+                        <option value="">Selecione o Processador</option>
+                        <option th:each="peca : ${pecas}" th:if="${peca.tipo == 'Processador'}" th:value="${peca.id}" th:text="${peca.nome}"></option>
+                    </select>
+                </div>
+
+                <div class="componente">
+                    <h2>Placa de Vídeo (GPU)</h2>
+                    <select th:field="*{placaVideo}" id="placaVideo-select">
+                        <option value="">Selecione a Placa de Vídeo</option>
+                        <option th:each="peca : ${pecas}" th:if="${peca.tipo == 'Placa de Vídeo'}" th:value="${peca.id}" th:text="${peca.nome}"></option>
+                    </select>
+                </div>
+                <div class="componente">
+                    <h2>Memória RAM</h2>
+                    <select th:field="*{memoriaRam}" id="memoriaRam-select">
+                        <option value="">Selecione a Memória RAM</option>
+                        <option th:each="peca : ${pecas}" th:if="${peca.tipo == 'Memória RAM'}" th:value="${peca.id}" th:text="${peca.nome}"></option>
+                    </select>
+                </div>
+                <div class="componente">
+                    <h2>Armazenamento</h2>
+                    <select th:field="*{armazenamento}" id="armazenamento-select">
+                        <option value="">Selecione o Armazenamento</option>
+                        <option th:each="peca : ${pecas}" th:if="${peca.tipo == 'Armazenamento'}" th:value="${peca.id}" th:text="${peca.nome}"></option>
+                    </select>
+                </div>
+                <div class="componente">
+                    <h2>Placa-Mãe</h2>
+                    <select th:field="*{placaMae}" id="placaMae-select">
+                        <option value="">Selecione a Placa-Mãe</option>
+                        <option th:each="peca : ${pecas}" th:if="${peca.tipo == 'Placa-Mãe'}" th:value="${peca.id}" th:text="${peca.nome}"></option>
+                    </select>
+                </div>
+                <div class="componente">
+                    <h2>Fonte de Alimentação</h2>
+                    <select th:field="*{fonte}">
+                        <option value="">Selecione a Fonte</option>
+                        <option value="500w">500W</option>
+                        <option value="650w">650W</option>
+                        <option value="750w">750W</option>
+                        <option value="850w">850W</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-montar">Montar PC</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 PC Hub. Todos os direitos reservados.</p>
+    </footer>
+
+    <script th:src="@{/js/montar.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const processadorSelect = document.getElementById('processador-select');
+            const placaMaeSelect = document.getElementById('placaMae-select');
+
+            // Função para buscar e popular as opções de Placa-Mãe
+            function updatePlacaMaeOptions() {
+                const processadorId = processadorSelect.value;
+                placaMaeSelect.innerHTML = '<option value="">Selecione a Placa-Mãe</option>'; // Limpa as opções
+
+                if (processadorId) {
+                    fetch(`/api/pecas/compativeis?tipo=Placa-Mãe&pecaBaseId=${processadorId}`)
+                        .then(response => response.json())
+                        .then(pecas => {
+                            pecas.forEach(peca => {
+                                const option = document.createElement('option');
+                                option.value = peca.id;
+                                option.textContent = peca.nome;
+                                placaMaeSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Erro ao buscar placas-mãe compatíveis:', error));
+                }
+            }
+
+            // Adiciona o listener de evento ao Processador
+            processadorSelect.addEventListener('change', updatePlacaMaeOptions);
+
+            // Adiciona o listener de evento à Placa-Mãe (para filtrar Processadores, se necessário)
+            // placaMaeSelect.addEventListener('change', updateProcessadorOptions); // Implementação futura
+
+            // Chamada inicial para popular a Placa-Mãe se um Processador já estiver selecionado (caso de edição)
+            if (processadorSelect.value) {
+                updatePlacaMaeOptions();
+            }
+        });
+    </script>
+</body>
+</html>

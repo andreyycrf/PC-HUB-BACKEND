@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Hub - Lista de PCs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .list-container {
+            max-width: 1200px;
+            margin: 80px auto 40px auto;
+            padding: 2rem;
+        }
+        .list-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+        .pc-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .pc-table th, .pc-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .pc-table th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        .pc-table tr:nth-child(even) {
+            background-color: var(--background);
+        }
+        .pc-table tr:hover {
+            background-color: var(--primary-light);
+        }
+        .alert-success {
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            font-weight: var(--font-weight-medium);
+            background-color: #d1fae5;
+            color: #059669;
+            border: 1px solid #6ee7b7;
+        }
+        @media (max-width: 768px) {
+            .pc-table, .pc-table thead, .pc-table tbody, .pc-table th, .pc-table td, .pc-table tr {
+                display: block;
+            }
+            .pc-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            .pc-table tr {
+                margin-bottom: 1rem;
+                border: 1px solid var(--border);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-sm);
+            }
+            .pc-table td {
+                border: none;
+                border-bottom: 1px solid var(--border);
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            .pc-table td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: var(--font-weight-semibold);
+                color: var(--text-dark);
+            }
+            .pc-table td:nth-of-type(1):before { content: "Nome"; }
+            .pc-table td:nth-of-type(2):before { content: "Processador"; }
+            .pc-table td:nth-of-type(3):before { content: "Placa Mãe"; }
+            .pc-table td:nth-of-type(4):before { content: "RAM"; }
+            .pc-table td:nth-of-type(5):before { content: "GPU"; }
+            .pc-table td:nth-of-type(6):before { content: "Armazenamento"; }
+            .pc-table td:nth-of-type(7):before { content: "Fonte"; }
+        }
+    </style>
+</head>
+<body>
+    <div class="list-container">
+        <h2>PCs Cadastrados</h2>
+
+        <div th:if="${param.success}" class="alert alert-success">
+            PC cadastrado com sucesso!
+        </div>
+
+        <table class="pc-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Processador</th>
+                    <th>Placa Mãe</th>
+                    <th>Memória RAM</th>
+                    <th>Placa de Vídeo</th>
+                    <th>Armazenamento</th>
+                    <th>Fonte</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pc : ${pcs}">
+                    <td th:text="${pc.nome}">PC Gamer Ultra</td>
+                    <td th:text="${pc.processador}">Intel Core i9</td>
+                    <td th:text="${pc.placaMae}">ASUS ROG</td>
+                    <td th:text="${pc.memoriaRam}">32GB DDR4</td>
+                    <td th:text="${pc.placaVideo}">RTX 4090</td>
+                    <td th:text="${pc.armazenamento}">2TB SSD</td>
+                    <td th:text="${pc.fonte}">850W Gold</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="text-align: center; margin-top: 20px;">
+            <a th:href="@{/pc/cadastro}" class="btn btn-primary">Cadastrar Novo PC</a>
+        </div>
+    </div>
+</body>
+</html>

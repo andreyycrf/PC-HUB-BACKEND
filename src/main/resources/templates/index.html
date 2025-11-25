@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PC Hub - Avalie, monte e otimize seu setup de PC. Descubra o desempenho da sua máquina e crie a configuração perfeita.">
+    <meta name="keywords" content="PC, hardware, setup, computador, montar PC, avaliar desempenho, compatibilidade">
+    <title>PC Hub - Sua Plataforma Completa para Setup de PC</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/jogos.png}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Os assets devem ser criados ou o usuário deve fornecê-los -->
+    <!-- <link rel="preload" th:href="@{/assets/avaliar.jpg}" as="image"> -->
+    <!-- <link rel="preload" th:href="@{/assets/montar.jpg}" as="image"> -->
+    <!-- <link rel="preload" th:href="@{/assets/cadastrar.jpg}" as="image"> -->
+</head>
+<body class="home">
+    <header role="banner">
+        <nav class="navbar" aria-label="Navegação principal">
+            <div class="container nav-container">
+                <a th:href="@{/}" class="nav-logo" aria-label="PC Hub - Página inicial">
+                    <span class="logo-icon" aria-hidden="true">⚙️</span>
+                    PC Hub
+                </a>
+                <div class="nav-menu">
+                    <!-- Links para usuários autenticados -->
+                    <div sec:authorize="isAuthenticated()">
+                        <a th:href="@{/pc/cadastro}" class="btn btn-primary">Cadastrar PC</a>
+                        <a th:href="@{/pecas}" class="btn btn-secondary">Inventário</a>
+                        <a th:href="@{/pc/lista}" class="btn btn-secondary">Meus PCs</a>
+                        <a th:href="@{/logout}" class="btn btn-secondary">Sair</a>
+                    </div>
+                    <!-- Links para usuários não autenticados -->
+                    <div sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/login}" class="btn btn-primary">Login</a>
+                        <a th:href="@{/usuario/cadastro}" class="btn btn-secondary">Cadastro</a>
+                    </div>
+                </div>
+                <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu principal">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-home" role="main">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <h1 id="hero-title" class="hero-title">
+                        Bem-vindo ao <span class="highlight">PC Hub</span> 
+                        <span class="hero-emoji" aria-hidden="true">💻</span>
+                    </h1>
+                    <p class="hero-description">
+                        Descubra o desempenho do seu setup, monte um novo PC ou aprenda a otimizar sua máquina!
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number" data-count="1000">0</span>
+                            <span class="stat-label">Setups Avaliados</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-count="500">0</span>
+                            <span class="stat-label">PCs Montados</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-count="200">0</span>
+                            <span class="stat-label">Configurações Cadastradas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features" aria-labelledby="features-title">
+            <div class="container">
+                <h2 id="features-title" class="section-title visually-hidden">Nossos Serviços</h2>
+
+                <div class="cards-container">
+                    <a th:href="@{/avaliar}" class="card feature-card" aria-labelledby="card-avaliar">
+                        <div class="card-icon" aria-hidden="true">
+                            <!-- Imagem placeholder, o usuário deve fornecer os assets -->
+                            <img th:src="@{/assets/avaliar.jpg}" alt="Ícone de avaliação" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <h3 id="card-avaliar" class="card-title">Avaliar Setup</h3>
+                            <p class="card-description">
+                                Simule o desempenho do seu setup atual e verifique a compatibilidade entre os componentes.
+                            </p>
+                            <span class="card-cta">Começar Avaliação →</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/montar}" class="card feature-card" aria-labelledby="card-montar">
+                        <div class="card-icon" aria-hidden="true">
+                            <!-- Imagem placeholder, o usuário deve fornecer os assets -->
+                            <img th:src="@{/assets/montar.jpg}" alt="Ícone de montagem" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <h3 id="card-montar" class="card-title">Montar PC</h3>
+                            <p class="card-description">
+                                Monte sua máquina ideal com base no seu orçamento e garantia de compatibilidade total.
+                            </p>
+                            <span class="card-cta">Montar Agora →</span>
+                        </div>
+                    </a>
+
+                    <a th:href="@{/pc/cadastro}" class="card feature-card" aria-labelledby="card-cadastrar">
+                        <div class="card-icon" aria-hidden="true">
+                            <!-- Imagem placeholder, o usuário deve fornecer os assets -->
+                            <img th:src="@{/assets/cadastrar.jpg}" alt="Ícone de cadastro" loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <h3 id="card-cadastrar" class="card-title">Cadastrar Setup</h3>
+                            <p class="card-description">
+                                Adicione seu setup à nossa base e ajude outros usuários com configurações semelhantes.
+                            </p>
+                            <span class="card-cta">Cadastrar →</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section" aria-labelledby="cta-title">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 id="cta-title" class="cta-title">Pronto para otimizar seu setup?</h2>
+                    <p class="cta-description">
+                        Junte-se a milhares de entusiastas que já melhoraram seus PCs com nossas ferramentas.
+                    </p>
+                    <div class="cta-buttons">
+                        <a th:href="@{/avaliar}" class="btn btn-primary">Começar Agora</a>
+                        <a th:href="@{/}" class="btn btn-secondary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a th:href="@{/}" class="footer-logo">
+                        <span class="logo-icon" aria-hidden="true">⚙️</span>
+                        PC Hub
+                    </a>
+                    <p class="footer-description">
+                        Sua plataforma completa para avaliação, montagem e otimização de setups de PC.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-title">Serviços</h4>
+                        <ul class="footer-list">
+                            <li><a th:href="@{/avaliar}">Avaliar Setup</a></li>
+                            <li><a th:href="@{/montar}">Montar PC</a></li>},{find:
+                            <li><a th:href="@{/pc/cadastro}">Cadastrar Setup</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="footer-title">Conta</h4>
+                        <ul class="footer-list">
+                            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a th:href="@{/usuario/cadastro}">Cadastro</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/pc/lista}">Meus PCs</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PC Hub. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/home.js}"></script>
+</body>
+</html>

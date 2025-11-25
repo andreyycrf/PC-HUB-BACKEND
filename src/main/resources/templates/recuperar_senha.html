@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - PC Hub</title>
+    <link rel="stylesheet" th:href="@{/css/recuperar.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>Recuperar Senha</h1>
+            <form id="RecuperarSenhaForm" th:action="@{/recuperar_senha}" method="post">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Digite seu email" required>
+                </div>
+                <button type="submit" class="btn-login">Enviar Link de Recuperação</button>
+            </form>
+
+            <p>Voltar para <a th:href="@{/login}">Login</a></p>
+        </div>
+    </div>
+
+    <script th:src="@{/js/recuperar.js}"></script>
+</body>
+</html>
