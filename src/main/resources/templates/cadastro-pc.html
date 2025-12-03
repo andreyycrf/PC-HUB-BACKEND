@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Hub - Cadastro de PC</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos básicos para o formulário */
+        .form-container {
+            max-width: 800px;
+            margin: 80px auto 40px auto;
+            padding: 2rem;
+            background-color: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: var(--font-weight-medium);
+            color: var(--text-medium);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        .btn-submit {
+            grid-column: 1 / -1;
+            width: 100%;
+            margin-top: 1rem;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+        .alert-error {
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius-md);
+            text-align: left;
+            font-weight: var(--font-weight-medium);
+            background-color: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+        }
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+	<header role="banner">
+	        <nav class="navbar" aria-label="Navegação principal">
+	            <div class="container nav-container">
+	                <a th:href="@{/}" class="nav-logo" aria-label="PC Hub - Página inicial">
+	                    <span class="logo-icon" aria-hidden="true">⚙️</span>
+	                    PC Hub
+	                </a>
+	                <div class="nav-menu">
+	                    <!-- Links para usuários autenticados -->
+	                    <div sec:authorize="isAuthenticated()">
+	                        <a th:href="@{/pc/cadastro}" class="btn btn-primary">Cadastrar PC</a>
+	                        <a th:href="@{/pecas}" class="btn btn-secondary">Inventário</a>
+	                        <a th:href="@{/pc/lista}" class="btn btn-secondary">Meus PCs</a>
+	                        <a th:href="@{/logout}" class="btn btn-secondary">Sair</a>
+	                    </div>
+	                    <!-- Links para usuários não autenticados -->
+	                    <div sec:authorize="!isAuthenticated()">
+	                        <a th:href="@{/login}" class="btn btn-primary">Login</a>
+	                        <a th:href="@{/usuario/cadastro}" class="btn btn-secondary">Cadastro</a>
+	                    </div>
+	                </div>
+	                <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu principal">
+	                    <span class="hamburger" aria-hidden="true"></span>
+	                </button>
+	            </div>
+	        </nav>
+	    </header>
+    <div class="form-container">
+        <h2>Cadastrar Novo PC</h2>
+
+        <div th:if="${error}" class="alert alert-error">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form th:action="@{/pc/cadastro}" th:object="${pc}" method="post">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label for="nome">Nome do PC/Setup:</label>
+                    <input type="text" id="nome" th:field="*{nome}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="processador">Processador (CPU):</label>
+                    <input type="text" id="processador" th:field="*{processador}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="placaMae">Placa Mãe:</label>
+                    <input type="text" id="placaMae" th:field="*{placaMae}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memoriaRam">Memória RAM:</label>
+                    <input type="text" id="memoriaRam" th:field="*{memoriaRam}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="placaVideo">Placa de Vídeo (GPU):</label>
+                    <input type="text" id="placaVideo" th:field="*{placaVideo}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="armazenamento">Armazenamento (SSD/HDD):</label>
+                    <input type="text" id="armazenamento" th:field="*{armazenamento}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fonte">Fonte de Alimentação:</label>
+                    <input type="text" id="fonte" th:field="*{fonte}" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Cadastrar PC</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

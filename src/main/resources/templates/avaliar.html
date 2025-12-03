@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Avalie seu setup de PC - Verifique compatibilidade, desempenho e receba recomendações personalizadas para melhorias.">
+    <meta name="keywords" content="avaliar PC, compatibilidade hardware, desempenho computador, setup gamer, análise componentes PC">
+    <title>Avaliar Setup - PC Hub | Análise Completa do Seu Computador</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/jogos.png}">
+    <link rel="stylesheet" th:href="@{/css/avalie.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body class="evaluation-page">
+	<header role="banner">
+	        <nav class="navbar" aria-label="Navegação principal">
+	            <div class="container nav-container">
+	                <a th:href="@{/}" class="nav-logo" aria-label="PC Hub - Página inicial">
+	                    <span class="logo-icon" aria-hidden="true">⚙️</span>
+	                    PC Hub
+	                </a>
+	                <div class="nav-menu">
+	                    <!-- Links para usuários autenticados -->
+	                    <div sec:authorize="isAuthenticated()">
+	                        <a th:href="@{/pc/cadastro}" class="btn btn-primary">Cadastrar PC</a>
+	                        <a th:href="@{/pecas}" class="btn btn-secondary">Inventário</a>
+	                        <a th:href="@{/pc/lista}" class="btn btn-secondary">Meus PCs</a>
+	                        <a th:href="@{/logout}" class="btn btn-secondary">Sair</a>
+	                    </div>
+	                    <!-- Links para usuários não autenticados -->
+	                    <div sec:authorize="!isAuthenticated()">
+	                        <a th:href="@{/login}" class="btn btn-primary">Login</a>
+	                        <a th:href="@{/usuario/cadastro}" class="btn btn-secondary">Cadastro</a>
+	                    </div>
+	                </div>
+	                <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu principal">
+	                    <span class="hamburger" aria-hidden="true"></span>
+	                </button>
+	            </div>
+	        </nav>
+	    </header>
+    <header role="banner">
+        <nav class="navbar" aria-label="Navegação principal">
+            <div class="container nav-container">
+                <a th:href="@{/}" class="nav-logo" aria-label="PC Hub - Página inicial">
+                    <span class="logo-icon" aria-hidden="true">⚙️</span>
+                    PC Hub
+                </a>
+                <div class="nav-links">
+                    <a th:href="@{/}" class="nav-link">Início</a>
+                    <a th:href="@{/avaliar}" class="nav-link active" aria-current="page">Avaliar Setup</a>
+                    <a th:href="@{/montar}" class="nav-link">Montar PC</a>
+                    <a th:href="@{/pc/cadastro}" class="nav-link">Cadastrar</a>
+                    <a th:href="@{/login}" class="nav-link">Login</a>
+                    <a th:href="@{/logout}" class="nav-link">Sair</a>
+                </div>
+                <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu principal">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content" role="main">
+        <!-- Hero Section -->
+        <section class="evaluation-hero" aria-labelledby="hero-title">
+            <div class="container">
+                <div class="hero-content text-center">
+                    <h1 id="hero-title" class="hero-title">
+                        <span class="hero-icon" aria-hidden="true">🔍</span>
+                        Avalie Seu Setup
+                    </h1>
+                    <p class="hero-description">
+                        Analise o desempenho do seu PC, verifique compatibilidade entre componentes e receba recomendações personalizadas para melhorias.
+                    </p>
+                    <div class="hero-features">
+                        <div class="feature-tag">
+                            <span class="feature-icon">✅</span>
+                            Análise de Compatibilidade
+                        </div>
+                        <div class="feature-tag">
+                            <span class="feature-icon">⚡</span>
+                            Avaliação de Desempenho
+                        </div>
+                        <div class="feature-tag">
+                            <span class="feature-icon">💡</span>
+                            Recomendações Personalizadas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulário de Avaliação -->
+        <section class="evaluation-section" aria-labelledby="evaluation-form-title">
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="evaluation-form-title" class="section-title">Configure Seu Setup</h2>
+                    <p class="section-description">
+                        Preencha as informações do seu PC abaixo. Quanto mais detalhes, mais precisa será a análise.
+                    </p>
+                </div>
+
+                <form id="setupForm" class="evaluation-form" th:action="@{/avaliar}" th:object="${avaliacaoSetup}" method="post" novalidate>
+                    <div class="form-grid">
+                        <!-- Processador -->
+                        <div class="form-group">
+                            <label for="cpu" class="form-label">
+                                Processador (CPU)
+                                <span class="required" aria-hidden="true">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control" id="cpu" th:field="*{cpu}"
+                                       placeholder="Ex.: Intel i5-12400F, Ryzen 5 5600X"
+                                       aria-required="true" required
+                                       list="listaProcessador">
+                                <span class="input-icon">🔧</span>
+                            </div>
+                            <datalist id="listaProcessador">
+                                <option value="Intel Core i3-12100">
+                                <option value="Intel Core i5-12400">
+                                <option value="Intel Core i7-12700K">
+                                <option value="Intel Core i9-12900K">
+                                <option value="AMD Ryzen 5 5600X">
+                                <option value="AMD Ryzen 7 5800X">
+                                <option value="AMD Ryzen 9 5900X">
+                            </datalist>
+                            <div class="form-hint">Modelo completo do processador</div>
+                        </div>
+
+                        <!-- Memória RAM -->
+                        <div class="form-group">
+                            <label for="ram" class="form-label">Memória RAM (GB)</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="form-control" id="ram" th:field="*{ramGb}"
+                                       placeholder="Ex.: 16, 32, 64"
+                                       min="4" max="128" step="4"
+                                       list="listaMemoriaRam">
+                                <span class="input-icon">🧠</span>
+                            </div>
+                            <datalist id="listaMemoriaRam">
+                                <option value="8">
+                                <option value="16">
+                                <option value="32">
+                                <option value="64">
+                                <option value="128">
+                            </datalist>
+                            <div class="form-hint">Capacidade total em GB</div>
+                        </div>
+
+                        <!-- Tipo de RAM -->
+                        <div class="form-group">
+                            <label for="memoriaTipo" class="form-label">Tipo de RAM</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control" id="memoriaTipo" th:field="*{memoriaTipo}"
+                                       placeholder="Ex.: DDR4 3200MHz, DDR5 4800MHz"
+                                       list="listaMemoriaTipo">
+                                <span class="input-icon">🔄</span>
+                            </div>
+                            <datalist id="listaMemoriaTipo">
+                                <option value="DDR4 2666MHz">
+                                <option value="DDR4 3200MHz">
+                                <option value="DDR5 4800MHz">
+                                <option value="DDR5 5200MHz">
+                            </datalist>
+                        </div>
+
+                        <!-- Placa de Vídeo -->
+                        <div class="form-group">
+                            <label for="gpu" class="form-label">Placa de Vídeo (GPU)</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control" id="gpu" th:field="*{gpu}"
+                                       placeholder="Ex.: RTX 3060, RX 6700 XT"
+                                       list="listaGpu">
+                                <span class="input-icon">🎮</span>
+                            </div>
+                            <datalist id="listaGpu">
+                                <option value="GTX 1650">
+                                <option value="RTX 3050">
+                                <option value="RTX 3060">
+                                <option value="RTX 3070">
+                                <option value="RTX 3080">
+                                <option value="RX 6600">
+                                <option value="RX 6700 XT">
+                                <option value="RX 6800">
+                            </datalist>
+                        </div>
+
+                        <!-- Armazenamento -->
+                        <div class="form-group">
+                            <label for="storage" class="form-label">Armazenamento</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control" id="storage" th:field="*{armazenamento}"
+                                       placeholder="Ex.: 512GB SSD NVMe, 2TB HDD"
+                                       list="listaArmazenamento">
+                                <span class="input-icon">💾</span>
+                            </div>
+                            <datalist id="listaArmazenamento">
+                                <option value="256GB SSD SATA">
+                                <option value="512GB SSD NVMe">
+                                <option value="1TB SSD NVMe">
+                                <option value="2TB HDD">
+                                <option value="4TB HDD">
+                            </datalist>
+                        </div>
+
+                        <!-- Placa-Mãe -->
+                        <div class="form-group">
+                            <label for="placaMae" class="form-label">Placa-Mãe</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control" id="placaMae" th:field="*{placaMae}"
+                                       placeholder="Ex.: B660, X570, Z690"
+                                       list="listaPlacaMae">
+                                <span class="input-icon">🔌</span>
+                            </div>
+                            <datalist id="listaPlacaMae">
+                                <option value="B660">
+                                <option value="Z690">
+                                <option value="B550">
+                                <option value="X570">
+                            </datalist>
+                        </div>
+
+                        <!-- Socket -->
+                        <div class="form-group">
+                            <label for="socket" class="form-label">Socket</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control" id="socket" th:field="*{socket}"
+                                       placeholder="Ex.: LGA1700, AM4, AM5"
+                                       list="listaSocket">
+                                <span class="input-icon">⚡</span>
+                            </div>
+                            <datalist id="listaSocket">
+                                <option value="LGA1700">
+                                <option value="LGA1200">
+                                <option value="AM4">
+                                <option value="AM5">
+                            </datalist>
+                        </div>
+
+                        <!-- Cooler -->
+                        <div class="form-group">
+                            <label for="cooler" class="form-label">Sistema de Refrigeração</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control" id="cooler" th:field="*{cooler}"
+                                       placeholder="Ex.: Air Cooler, Water Cooler 240mm"
+                                       list="listaCooler">
+                                <span class="input-icon">❄️</span>
+                            </div>
+                            <datalist id="listaCooler">
+                                <option value="Stock Cooler">
+                                <option value="Air Cooler">
+                                <option value="Water Cooler 240mm">
+                                <option value="Water Cooler 360mm">
+                            </datalist>
+                        </div>
+
+                        <!-- Fonte -->
+                        <div class="form-group">
+                            <label for="psu" class="form-label">Fonte de Alimentação (Watts)</label>
+                            <div class="input-wrapper">
+                                <input type="number" class="form-control" id="psu" th:field="*{fonteWatts}"
+                                       placeholder="Ex.: 650, 750, 850"
+                                       min="400" max="1600" step="50"
+                                       list="listaFonte">
+                                <span class="input-icon">🔋</span>
+                            </div>
+                            <datalist id="listaFonte">
+                                <option value="500">
+                                <option value="650">
+                                <option value="750">
+                                <option value="850">
+                                <option value="1000">
+                            </datalist>
+                            <div class="form-hint">Potência em Watts</div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large" id="evaluateBtn">
+                            <span class="btn-icon" aria-hidden="true">📊</span>
+                            Analisar Setup
+                            <span class="loading-spinner" aria-hidden="true"></span>
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            <span class="btn-icon" aria-hidden="true">🔄</span>
+                            Limpar Campos
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Resultados da Avaliação -->
+        <section id="evaluationResults" class="results-section" aria-live="polite" hidden>
+            <div class="container">
+                <div class="results-header">
+                    <h2 class="section-title">Resultado da Análise</h2>
+                    <div class="results-actions">
+                        <button class="btn btn-outline" id="exportBtn">
+                            <span class="btn-icon">📥</span>
+                            Exportar Relatório
+                        </button>
+                    </div>
+                </div>
+
+                <div id="evaluationResult" class="evaluation-result">
+                    
+                    
+
+                    <div class="score-summary" style="display: none;">
+                        <div class="score-box">
+                            <h4>Nota Geral</h4>
+                            <span class="score-number" th:text="*{notaGeral} + '/10'">8/10</span>
+                        </div>
+                        <div class="score-box">
+                            <h4>Desempenho</h4>
+                            <span class="score-text" th:text="*{desempenho}">Bom</span>
+                        </div>
+                        <div class="score-box">
+                            <h4>Compatibilidade</h4>
+                            <span class="score-text" th:text="*{compatibilidade}">Compatível</span>
+                        </div>
+                    </div>
+
+                    <div class="component-scores">
+                        <h4>Notas por Componente</h4>
+                        <table class="score-table">
+                            <thead>
+                                <tr>
+                                    <th>Componente</th>
+                                    <th>Detalhe</th>
+                                    <th>Nota (0-10)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="nota : *{notasComponentes}">
+                                    <td th:text="${nota.nome}">Processador</td>
+                                    <td th:text="${nota.detalhe}">Intel i5-12400F</td>
+                                    <td>
+                                        <span class="component-score" th:text="${nota.nota}">8</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tips-section">
+                        <h4>Recomendações:</h4>
+                        <ul class="recommendation-list">
+                            <li th:each="rec : *{recomendacoes}" th:text="${rec}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Dicas -->
+        <section class="tips-section">
+            <div class="container">
+                <h2 class="section-title">Dicas para Melhorar Seu Setup</h2>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">⚡</div>
+                        <h3>Otimização de RAM</h3>
+                        <p>Verifique se está utilizando dual channel e frequências compatíveis com sua placa-mãe.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">💾</div>
+                        <h3>Armazenamento Rápido</h3>
+                        <p>SSDs NVMe oferecem performance significativamente superior para sistema e aplicações.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🔌</div>
+                        <h3>Compatibilidade</h3>
+                        <p>Sempre verifique socket do processador e slots disponíveis na placa-mãe.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a th:href="@{/}" class="footer-logo">
+                        <span class="logo-icon" aria-hidden="true">⚙️</span>
+                        PC Hub
+                    </a>
+                    <p class="footer-description">
+                        Sua plataforma completa para avaliação, montagem e otimização de setups de PC.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-title">Serviços</h4>
+                        <ul class="footer-list">
+                            <li><a th:href="@{/avaliar}">Avaliar Setup</a></li>
+                            <li><a th:href="@{/montar}">Montar PC</a></li>
+                            <li><a th:href="@{/pc/cadastro}">Cadastrar Setup</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="footer-title">Suporte</h4>
+                        <ul class="footer-list">
+                            <li><a th:href="@{/}">Ajuda</a></li>
+                            <li><a th:href="@{/}">Contato</a></li>
+                            <li><a th:href="@{/}">Sobre Nós</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PC Hub. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/evaluation.js}"></script>
+</body>
+</html>
